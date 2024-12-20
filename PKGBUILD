@@ -55,7 +55,7 @@ b2sums=('SKIP')
 #validpgpkeys=('256F73CEEFC6705C6BBAB20E5FBBB32941E3740A') # Anton Hvornum (Torxed) <anton@hvornum.se>
 
 pkgver() {
-  cd $pkgname-$pkgver
+  cd $pkgname-master
 
   awk '$1 ~ /^__version__/ {gsub("\"", ""); print $3}' archinstall/__init__.py
 }
