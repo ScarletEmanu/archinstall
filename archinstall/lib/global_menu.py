@@ -16,6 +16,7 @@ from .interactions import (
 	ask_for_audio_selection,
 	ask_for_bootloader,
 	ask_for_swap,
+	ask_for_cyber,
 	ask_for_uki,
 	ask_hostname,
 	ask_ntp,
@@ -197,6 +198,20 @@ class GlobalMenu(AbstractMenu):
 				key='ntp'
 			),
 			MenuItem(
+				text=str(_('Commands Post Installation')),
+				#action=lambda x: ask_for_cyber(x),
+				value=[],
+				preview_action=self._prev_commands,
+				key='custom-commands'
+			),
+			MenuItem(
+				text=str(_('Tools Cybersecurity')),
+				action=ask_for_cyber,
+				value=False,
+				preview_action=self._prev_cyber,
+				key="cyber"
+			),
+			MenuItem(
 				text=''
 			),
 			MenuItem(
@@ -296,6 +311,26 @@ class GlobalMenu(AbstractMenu):
 	def _locale_selection(self, preset: LocaleConfiguration) -> LocaleConfiguration:
 		locale_config = LocaleMenu(preset).run()
 		return locale_config
+
+	def _prev_cyber(self, item: MenuItem) -> str | None:
+		if item.value is not None:
+			output = f'{_("Install tools for cybersecurity")}: '
+			output += str(_('Enabled')) if item.value else str(_('Disabled'))
+			return output
+		return None
+	
+	def _prev_commands(self, item: MenuItem) -> str | None:
+		if item.value:
+			with open("output.txt", "w") as f:
+				print(item.value, file=f)
+			#return format_cols(item.value, None)
+			output=f"{len(item.value)}\n"
+			for v in item.value:
+				output += f"- {v}\n"
+			
+			return output
+
+		return None
 
 	def _prev_locale(self, item: MenuItem) -> str | None:
 		if not item.value:

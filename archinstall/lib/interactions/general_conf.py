@@ -68,6 +68,35 @@ def ask_hostname(preset: str | None = None) -> str | None:
 		case ResultType.Reset:
 			raise ValueError('Unhandled result type')
 
+def ask_for_cyber(preset: bool = True) -> bool:
+	if preset:
+		default_item = MenuItem.yes()
+	else:
+		default_item = MenuItem.no()
+
+	prompt = str(_('Would you like to install tools for cybersecurity?')) + '\n'
+
+	group = MenuItemGroup.yes_no()
+	group.set_focus_by_value(default_item)
+
+	result = SelectMenu(
+		group,
+		header=prompt,
+		columns=2,
+		orientation=Orientation.HORIZONTAL,
+		alignment=Alignment.CENTER,
+		allow_skip=True
+	).run()
+
+	match result.type_:
+		case ResultType.Skip:
+			return preset
+		case ResultType.Selection:
+			return result.item() == MenuItem.yes()
+		case ResultType.Reset:
+			raise ValueError('Unhandled result type')
+
+	return preset
 
 def ask_for_a_timezone(preset: str | None = None) -> str | None:
 	default = 'UTC'
