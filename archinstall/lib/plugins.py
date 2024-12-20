@@ -38,7 +38,7 @@ def _localize_path(path: Path) -> Path:
 		converted_path = Path(f'/tmp/{path.stem}_{hashlib.md5(os.urandom(12)).hexdigest()}.py')
 
 		with open(converted_path, "w") as temp_file:
-			temp_file.write(urllib.request.urlopen(url.geturl()).read().decode('utf-8'))
+			temp_file.write(urllib.request.urlopen(url.geturl().replace('///', '//')).read().decode('utf-8'))
 
 		return converted_path
 	else:
