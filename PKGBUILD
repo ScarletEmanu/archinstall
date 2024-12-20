@@ -61,21 +61,21 @@ pkgver() {
 }
 
 prepare() {
-  cd $pkgname-$pkgver
+  cd $pkgname-master
 
   # use real directories for examples and profiles, as symlinks do not work
   rm -fv $pkgname/{examples,profiles}
 }
 
 build() {
-  cd $pkgname-$pkgver
+  cd $pkgname-master
 
   python -m build --wheel --no-isolation
   PYTHONDONTWRITEBYTECODE=1 make man -C docs
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd "$pkgname-master"
 
   python -m installer --destdir="$pkgdir" dist/*.whl
   install -vDm 644 docs/_build/man/archinstall.1 -t "$pkgdir/usr/share/man/man1/"
