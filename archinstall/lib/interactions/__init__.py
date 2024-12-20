@@ -11,6 +11,7 @@ from .general_conf import (
 	ask_additional_packages_to_install,
 	ask_for_a_timezone,
 	ask_for_audio_selection,
+	ask_for_cyber,
 	ask_hostname,
 	ask_ntp,
 	select_additional_repositories,
