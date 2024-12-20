@@ -8,7 +8,7 @@ pkgver=3.0.1
 pkgrel=1
 pkgdesc="Just another guided/automated Arch Linux installer with a twist"
 arch=(any)
-url="https://github.com/archlinux/archinstall"
+url="https://github.com/ScarletEmanu/archinstall"
 license=(GPL3)
 depends=(
   'arch-install-scripts'
@@ -47,12 +47,12 @@ provides=(python-archinstall archinstall)
 conflicts=(python-archinstall archinstall-git)
 replaces=(python-archinstall archinstall-git)
 source=(
-  $pkgname-$pkgver.tar.gz::$url/archive/refs/tags/$pkgver.tar.gz
-  $pkgname-$pkgver.tar.gz.sig::$url/releases/download/$pkgver/$pkgname-$pkgver.tar.gz.sig
+  $pkgname-$pkgver.tar.gz::$url/archive/refs/heads/master.tar.gz
+  #$pkgname-$pkgver.tar.gz.sig::$url/releases/download/$pkgver/$pkgname-$pkgver.tar.gz.sig
 )
-sha512sums=()
-b2sums=()
-validpgpkeys=('256F73CEEFC6705C6BBAB20E5FBBB32941E3740A') # Anton Hvornum (Torxed) <anton@hvornum.se>
+sha512sums=('SKIP')
+b2sums=('SKIP')
+#validpgpkeys=('256F73CEEFC6705C6BBAB20E5FBBB32941E3740A') # Anton Hvornum (Torxed) <anton@hvornum.se>
 
 pkgver() {
   cd $pkgname-$pkgver
