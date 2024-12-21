@@ -32,6 +32,16 @@ def ask_user_questions() -> None:
 
 		global_menu.run()
 
+def purify_packages(packages: str | list[str]):
+	if isinstance(packages, str):
+		packages = [packages]
+	
+	for pkg in packages:
+		if pkg.find("$LOCALE"):
+			locale_conf : locale.LocaleConfiguration = archinstall.arguments['locale_config']
+			pkg.replace("$LOCALE", locale_conf.sys_lang)
+
+
 
 def perform_installation(mountpoint: Path) -> None:
 	"""
@@ -110,8 +120,16 @@ def perform_installation(mountpoint: Path) -> None:
 		else:
 			info("No audio server will be installed")
 
-		if archinstall.arguments.get('packages', None) and archinstall.arguments.get('packages', None)[0] != '':
-			installation.add_additional_packages(archinstall.arguments.get('packages', None))
+		if packages := archinstall.arguments.get('packages', None) and (packages != '' or packages != list() or packages != dict()):
+			if(isinstance(packages, dict)):
+				packages = {"general": packages}
+
+			for pkgs in packages.values():
+				if len(pkgs) != 0:
+					#modifico leggermente i nomi dei pacchetti: $LOCALE è il locale dell'installazione
+					purify_packages(pkgs)
+
+					installation.add_additional_packages(pkgs)
 
 		if profile_config := archinstall.arguments.get('profile_config', None):
 			profile_handler.install_profile_config(installation, profile_config)
