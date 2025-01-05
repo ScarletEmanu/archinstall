@@ -257,7 +257,7 @@ class SysCommandWorker:
 				peek_output_log.write(str(output))
 
 			if change_perm:
-				os.chmod(str(peak_logfile), stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+				peak_logfile.chmod(stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
 
 			sys.stdout.write(str(output))
 			sys.stdout.flush()
@@ -317,14 +317,10 @@ class SysCommandWorker:
 					cmd_log.write(f"{time.time()} {self.cmd}\n")
 
 				if change_perm:
-					os.chmod(str(history_logfile), stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
+					history_logfile.chmod(stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
 			except (PermissionError, FileNotFoundError):
 				# If history_logfile does not exist, ignore the error
 				pass
-			except Exception as e:
-				exception_type = type(e).__name__
-				error(f"Unexpected {exception_type} occurred in {self.cmd}: {e}")
-				raise e
 
 			if storage.get('arguments', {}).get('debug'):
 				debug(f"Executing: {self.cmd}")
