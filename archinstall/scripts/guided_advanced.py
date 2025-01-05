@@ -12,6 +12,8 @@ from archinstall.lib.models.network_configuration import NetworkConfiguration
 from archinstall.lib.profile.profiles_handler import profile_handler
 from archinstall.tui import Tui
 
+from typing import Any
+
 if archinstall.arguments.get('help'):
 	print("See `man archinstall` for help.")
 	exit(0)
