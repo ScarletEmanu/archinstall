@@ -426,11 +426,7 @@ class GlobalMenu(AbstractMenu[None]):
 		if not item.value:
 			return None
 		config: PacmanConfiguration = item.value
-		output = ''
-		if self._advanced:
-			output += '{}: {}\n'.format(tr('Parallel Downloads'), config.parallel_downloads)
-		output += '{}: {}'.format(tr('Color'), config.color)
-		return output
+		return config.preview(advanced=self._advanced)
 
 	def _prev_kernel(self, item: MenuItem) -> str | None:
 		if item.value:

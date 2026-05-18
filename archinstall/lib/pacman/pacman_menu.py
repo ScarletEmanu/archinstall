@@ -43,6 +43,22 @@ class PacmanMenu(AbstractSubMenu[PacmanConfiguration]):
 				preview_action=lambda item: str(item.get_value()),
 				key='color',
 			),
+			MenuItem(
+				text=tr('Verbose Package Lists'),
+				action=select_verbose_pkg_lists,
+				value=self._pacman_conf.verbose_pkg_lists,
+				preview_action=lambda item: str(item.get_value()),
+				key='verbose_pkg_lists',
+				enabled=self._advanced,
+			),
+			MenuItem(
+				text=tr('I Love Candy'),
+				action=select_i_love_candy,
+				value=self._pacman_conf.i_love_candy,
+				preview_action=lambda item: str(item.get_value()),
+				key='i_love_candy',
+				enabled=self._advanced,
+			),
 		]
 
 	@override
@@ -102,16 +118,41 @@ async def select_parallel_downloads(preset: int = 5) -> int | None:
 
 
 async def select_color(preset: bool = True) -> bool | None:
-	result = await Confirmation(
+	return await _select_boolean_option(
 		header=tr('Enable colored output for pacman'),
 		preset=preset,
+		reset_value=True,
+	)
+
+
+async def select_verbose_pkg_lists(preset: bool = False) -> bool | None:
+	return await _select_boolean_option(
+		header=tr('Enable verbose package lists in pacman output'),
+		preset=preset,
+		reset_value=False,
+	)
+
+
+async def select_i_love_candy(preset: bool = False) -> bool | None:
+	return await _select_boolean_option(
+		header=tr('Enable I Love Candy animation during downloads'),
+		preset=preset,
+		reset_value=False,
+	)
+
+
+async def _select_boolean_option(header: str, preset: bool, reset_value: bool, allow_reset: bool = False) -> bool | None:
+	result = await Confirmation(
+		header=header,
+		preset=preset,
 		allow_skip=True,
+		allow_reset=allow_reset,
 	).show()
 
 	match result.type_:
 		case ResultType.Skip:
 			return preset
 		case ResultType.Reset:
-			return True
+			return reset_value
 		case ResultType.Selection:
 			return result.get_value()

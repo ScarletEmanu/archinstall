@@ -55,7 +55,7 @@ class PacmanConfig:
 			PACMAN_CONF.copy(self._config_remote_path, preserve_metadata=True)
 
 	def configure(self, pacman_config: PacmanConfiguration) -> None:
-		"""Apply PacmanConfiguration (Color, ParallelDownloads) to the target system's pacman.conf."""
+		"""Apply PacmanConfiguration options to the target system's pacman.conf."""
 		if not self._config_remote_path or not self._config_remote_path.exists():
 			return
 
@@ -67,6 +67,11 @@ class PacmanConfig:
 				result.append(f'ParallelDownloads = {pacman_config.parallel_downloads}')
 			elif re.match(r'^#?\s*Color\s*$', line):
 				result.append('Color' if pacman_config.color else '#Color')
+
+				if pacman_config.i_love_candy:
+					result.append('ILoveCandy')
+			elif re.match(r'^#?\s*VerbosePackageLists\s*$', line):
+				result.append('VerbosePackageLists' if pacman_config.verbose_pkg_lists else '#VerbosePackageLists')
 			else:
 				result.append(line)
 
